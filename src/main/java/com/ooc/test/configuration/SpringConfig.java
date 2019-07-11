@@ -1,4 +1,4 @@
-package com.ooc.test.configurations;
+package com.ooc.test.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
