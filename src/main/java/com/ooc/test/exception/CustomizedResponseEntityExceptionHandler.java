@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RestController
 @ControllerAdvice
@@ -40,7 +41,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 LocalDateTime.now(),
                 "FAIL",
                 ex.getMessage(),
-                String.format(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
+                ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
         );
 
 
@@ -65,11 +66,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         HttpHeaders header = new HeaderResponse().addAll(
                 LocalDateTime.now(),
                 "FAIL",
-                String.format("%s is invalid", ex.getMessage()),
-                String.format(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
+                Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage(),
+                ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
         );
-
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(header).build();
     }
 }
